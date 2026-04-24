@@ -1,6 +1,6 @@
 # KeepLag - HTTP Stress Test Tool
 
-A terminal-based HTTP stress testing tool inspired by Slowloris.
+A terminal-based HTTP stress testing tool inspired by [Slowloris](https://github.com/gkbrk/slowloris).
 
 ## What is KeepLag?
 
@@ -12,6 +12,49 @@ KeepLag is a low-bandwidth HTTP stress testing tool that tests server resilience
 4. Never completing requests - server waits indefinitely
 
 **Purpose:** Security research, stress testing, and load testing of web servers.
+
+---
+
+## KeepLag - Connection Technique Differences
+
+### What KeepLag Does Differently
+
+#### 1. **Modular Socket Management**
+
+```python
+class SocketManager:
+    def create_socket(self)   # Create connection
+    def init_socket(self)    # Initialize HTTP request
+    def send_keepalive(self) # Send keep-alive header
+    def close_dead_sockets(self) # Cleanup
+```
+
+vs original (single function with all logic)
+
+#### 2. **Error Handling**
+
+| Feature | Original | KeepLag |
+|---------|----------|--------|
+| Connection errors | Silent fail | Debug logging |
+| Dead socket cleanup | None | Automatic |
+| Retry logic | None | Attempt based |
+| Verbose output | Basic | Detailed |
+
+#### 3. **CLI Interface**
+
+```bash
+# KeepLag
+python3 src/keeplag.py target.com -s 100 -v --sleeptime 10
+```
+
+#### 4. **Extensible Architecture**
+
+- `SocketManager` class can be overridden
+- Custom headers support
+- Different protocol variations possible
+- Testable structure
+
+---
 
 ## Features
 
@@ -27,7 +70,7 @@ KeepLag is a low-bandwidth HTTP stress testing tool that tests server resilience
 
 ```bash
 # Clone and run
-git clone https://github.com/cekhanmolla/keep-lag.git
+git clone https://github.com/ceyhanmolla/keep-lag.git
 cd keep-lag
 
 # Basic usage
@@ -99,4 +142,6 @@ MIT License
 
 ## Author
 
-cekhanmolla
+Ceyhan Molla - [GitHub](https://github.com/ceyhanmolla)
+
+Inspired by [Slowloris](https://github.com/gkbrk/slowloris) by Gokberk Yaltirakli
